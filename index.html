@@ -237,7 +237,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </footer>
 
 <script>
-var TO = 'Sanketpokharkar8880@gmail.com';
+// var TO = 'Sanketpokharkar8880@gmail.com';
 document.getElementById('yr').textContent = new Date().getFullYear();
 
 // TODO : Change this later
@@ -297,27 +297,36 @@ try{ if(localStorage.getItem('lang')==='mr') apply('mr'); }catch(e){}
 //   window.location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent('Enquiry: ' + f.type.value) + '&body=' + encodeURIComponent(body);
 //   document.getElementById('status').textContent = lang==='mr' ? 'ईमेल अ‍ॅप उघडत आहे.' : 'Opening your email app with the enquiry.';
 // });
+
 const TO = 'Sanketpokharkar8880@gmail.com';
 
 document.getElementById('form').addEventListener('submit', function (e) {
-    e.preventDefault();
+  e.preventDefault();
+  const f = e.target;
 
-    const f = e.target;
+  const subject = 'Enquiry: ' + f.type.value;
+  const body =
+    'Name: ' + f.elements['name'].value + '\n' +
+    'Phone: ' + f.phone.value + '\n' +
+    'Matter: ' + f.type.value + '\n\n' +
+    f.msg.value;
 
-    const body =
-        'Name: ' + f.name.value + '\n' +
-        'Phone: ' + f.phone.value + '\n' +
-        'Matter: ' + f.type.value + '\n\n' +
-        f.msg.value;
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    const url =
-        'https://mail.google.com/mail/u/0/?view=cm' +
-        '&fs=1' +
-        '&to=' + encodeURIComponent(TO) +
-        '&su=' + encodeURIComponent('Enquiry: ' + f.type.value) +
-        '&body=' + encodeURIComponent(body);
-
-    window.location.href = url;
+  if (isMobile) {
+    window.location.href = 'mailto:' + TO +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  } else {
+    window.open(
+      'https://mail.google.com/mail/?view=cm&fs=1' +
+      '&to=' + encodeURIComponent(TO) +
+      '&su=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body),
+      '_blank', 'noopener');
+  }
+  document.getElementById('status').textContent =
+    lang === 'mr' ? 'ईमेल उघडत आहे.' : 'Opening your email with the enquiry.';
 });
 </script>
 </body>
